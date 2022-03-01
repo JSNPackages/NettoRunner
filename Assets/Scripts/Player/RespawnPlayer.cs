@@ -1,37 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class RespawnPlayer : MonoBehaviour
-{
-    Vector2 spawnPos;
+public class RespawnPlayer : MonoBehaviour {
+    private Vector2 spawnPoint;
+    private Vector2 currentSpawn;
     Rigidbody2D rb;
     int health = 3;
 
     // Start is called before the first frame update
     void Start() {
-        spawnPos = transform.position;
+        this.spawnPoint = transform.position;
+        this.currentSpawn = transform.position;
         rb = GetComponent<Rigidbody2D>();
 
     }
 
     public void SetSpawnPoint(Vector2 newSpawn) {
-        spawnPos = newSpawn;
+        this.currentSpawn = newSpawn;
     }
 
     public void RespawnMyPlayer() {
         rb.velocity = Vector2.zero;
-        transform.position = spawnPos;
 
+        if (this.health == 0) {
+            this.currentSpawn = this.spawnPoint;
+        }
+        
+        transform.position = this.currentSpawn.normalized;
     }
+    
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Enemy")) {
-            health -= 1;
-        }
-    }
-    private void Update() {
-        if (health == 0) {
-            print("u dead man?");
+            this.health -= 1;
+            RespawnMyPlayer();
         }
     }
 }

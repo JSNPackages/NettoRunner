@@ -27,15 +27,15 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded) {
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))&& isGrounded) {
             rb.velocity = Vector2.up * jumpForce;
         }
+        
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) {
             moveSpeed = 10f;
             animator.SetFloat("Speed", Mathf.Abs(moveSpeed));
         }
-
-
+        
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) {
             moveSpeed = 0f;
             animator.SetFloat("Speed", Mathf.Abs(moveSpeed));
